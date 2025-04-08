@@ -32,10 +32,22 @@ class DocumentManagerTest {
 
     @Test
     void save() {
-        Author author = new Author("1", "Michel");
-        Document b2 = new Document("1", "Changed document", "Content", author, Instant.now());
+        Document b2 = new Document("1", "Changed document", "Content", null, Instant.now());
 
         assertEquals(b2, manager.save(b2));
+    }
+
+    @Test
+    void saveNull() {
+        assertThrows(IllegalArgumentException.class, () -> manager.save(null));
+    }
+
+    @Test
+    void saveDocumentWithNullId() {
+        Document b2 = new Document(null, "Document b2", "Content b2", null, Instant.now());
+        Document b3 = new Document(null, "Document b3", "Content b3", null, Instant.now());
+        manager.save(b2);
+        assertEquals(b3, manager.save(b3));
     }
 
     @Test
@@ -67,5 +79,10 @@ class DocumentManagerTest {
     void findById() {
         assertTrue(manager.findById("1").isPresent());
         assertEquals(manager.findById("1").get().getId(), "1");
+    }
+
+    @Test
+    void findByNullId() {
+        assertThrows(IllegalArgumentException.class, () -> manager.findById(null));
     }
 }

@@ -29,6 +29,15 @@ class DocumentManager {
      * @return saved document
      */
     public Document save(Document document) {
+
+        if (document == null) {
+            throw new IllegalArgumentException("Document cannot be null");
+        }
+
+        if (document.getId() == null) {
+            document.setId(UUID.randomUUID().toString());
+        }
+
         documents.put(document.getId(), document);
         return document;
     }
@@ -92,6 +101,9 @@ class DocumentManager {
      * @return optional document
      */
     public Optional<Document> findById(String id) {
+        if ( id == null ) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return Optional.ofNullable(documents.get(id));
     }
 
